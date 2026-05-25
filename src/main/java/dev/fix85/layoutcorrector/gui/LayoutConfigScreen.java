@@ -31,7 +31,6 @@ public class LayoutConfigScreen extends Screen {
     protected void init() {
         int cx = this.width / 2;
 
-        // --- ЛЕВАЯ КОЛОНКА: ОБЩИЕ НАСТРОЙКИ ---
         int leftX = cx - 180;
         int colW = 110;
 
@@ -53,8 +52,6 @@ public class LayoutConfigScreen extends Screen {
                 .build();
         addDrawableChild(correctLayoutBtn);
 
-
-        // --- СРЕДНЯЯ КОЛОНКА: СОЗДАТЕЛЬ АЛИАСОВ ---
         int midX = cx - 55;
         int midW = 110;
 
@@ -87,8 +84,6 @@ public class LayoutConfigScreen extends Screen {
             refresh();
         }).dimensions(midX, 105, midW, 20).build());
 
-
-        // --- ПРАВАЯ КОЛОНКА: СПИСОК АЛИАСОВ ---
         int rightX = cx + 70;
         int rightW = 115;
 
@@ -120,15 +115,12 @@ public class LayoutConfigScreen extends Screen {
             }
         }
 
-        // Кнопка полной очистки кастомных алиасов
         addDrawableChild(ButtonWidget.builder(Text.translatable("layoutcorrector.gui.clear_list"), b -> {
             Config.get().aliases.clear();
             Config.save();
             refresh();
         }).dimensions(rightX, 165, rightW, 20).build());
 
-
-        // --- КНОПКИ ДЕЙСТВИЙ (САМЫЙ НИЗ) ---
         addDrawableChild(ButtonWidget.builder(Text.translatable("layoutcorrector.gui.reset"), b -> {
             Config.resetToDefaults();
             refresh();

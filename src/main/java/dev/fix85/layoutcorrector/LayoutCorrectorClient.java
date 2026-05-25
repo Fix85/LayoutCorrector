@@ -34,11 +34,9 @@ public class LayoutCorrectorClient implements ClientModInitializer {
             }
         });
 
-        // Регистрируем события Fabric API для перехвата сообщений и команд
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
             if (!Config.get().enabled) return true;
 
-            // 1. Проверяем раскладку (например, ".ызфцт" -> "/spawn")
             if (Config.get().correctLayout && LayoutTranslator.shouldCorrectLayout(message)) {
                 String corrected = LayoutTranslator.translateLayout(message);
                 if (corrected.startsWith("/")) {
@@ -49,11 +47,10 @@ public class LayoutCorrectorClient implements ClientModInitializer {
                     if (client.player != null) {
                         client.player.networkHandler.sendChatCommand(finalCmd);
                     }
-                    return false; // Отменяем отправку исходного сообщения
+                    return false; 
                 }
             }
 
-            // 2. Проверяем русские алиасы (например, ".спавн" -> "/spawn")
             if (message.startsWith(".")) {
                 String potentialCmd = message.substring(1);
                 String aliasTranslated = LayoutTranslator.translateAliases(potentialCmd);
@@ -62,7 +59,7 @@ public class LayoutCorrectorClient implements ClientModInitializer {
                     if (client.player != null) {
                         client.player.networkHandler.sendChatCommand(aliasTranslated);
                     }
-                    return false; // Отменяем отправку исходного сообщения
+                    return false; 
                 }
             }
 
@@ -72,13 +69,11 @@ public class LayoutCorrectorClient implements ClientModInitializer {
         ClientSendMessageEvents.MODIFY_COMMAND.register(command -> {
             if (!Config.get().enabled) return command;
 
-            // 1. Сначала проверяем алиасы (например, "спавн" -> "spawn")
             String aliasTranslated = LayoutTranslator.translateAliases(command);
             if (!aliasTranslated.equals(command)) {
                 return aliasTranslated;
             }
 
-            // 2. Затем проверяем раскладку самой команды (например, "ызфцт" -> "spawn")
             if (Config.get().correctLayout && LayoutTranslator.containsRussian(command)) {
                 String corrected = LayoutTranslator.translateLayout(command);
                 return LayoutTranslator.translateAliases(corrected);

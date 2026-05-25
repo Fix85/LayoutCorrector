@@ -26,7 +26,7 @@ public class LayoutTranslator {
 
     public static boolean shouldCorrectLayout(String input) {
         if (input == null || input.isEmpty()) return false;
-        // Если начинается с точки (которая на русской раскладке является слэшем)
+        
         if (input.charAt(0) == '.') {
             if (input.length() > 1) {
                 char next = input.charAt(1);
@@ -50,22 +50,15 @@ public class LayoutTranslator {
         return false;
     }
 
-    /**
-     * Пытается перевести команду согласно пользовательским алиасам в Config.
-     * Например, "/спавн" -> "/spawn" или "/ах 10" -> "/ah 10".
-     * Входная строка cmd может начинаться как с "/", так и быть без неё (для sendCommand).
-     */
     public static String translateAliases(String cmd) {
         if (cmd == null || cmd.isEmpty()) return cmd;
         boolean hasSlash = cmd.startsWith("/");
         String raw = hasSlash ? cmd.substring(1) : cmd;
 
-        // Разделяем на команду и аргументы
         int spaceIndex = raw.indexOf(' ');
         String commandName = spaceIndex == -1 ? raw : raw.substring(0, spaceIndex);
         String arguments = spaceIndex == -1 ? "" : raw.substring(spaceIndex);
 
-        // Проверяем наличие алиаса
         String targetCommand = Config.get().aliases.get(commandName.toLowerCase());
         if (targetCommand != null) {
             String result = targetCommand + arguments;
