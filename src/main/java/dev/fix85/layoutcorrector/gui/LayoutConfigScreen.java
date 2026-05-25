@@ -24,6 +24,14 @@ public class LayoutConfigScreen extends Screen {
     private final List<Map.Entry<String, String>> aliasesToDraw = new ArrayList<>();
     private int extraAliasesCount = 0;
 
+    private static final int ROW1 = 55;
+    private static final int ROW2 = 79;
+    private static final int ROW3 = 103;
+    private static final int LABEL_PREFIX = 108;
+    private static final int ROW4 = 119;
+    private static final int ALIAS_CLEAR_Y = 168;
+    private static final int BOTTOM_Y = 205;
+
     public LayoutConfigScreen(Screen parent) {
         super(Text.translatable("layoutcorrector.title"));
         this.parent = parent;
@@ -35,28 +43,26 @@ public class LayoutConfigScreen extends Screen {
 
         int leftX = cx - 180;
         int colW = 110;
+        int midX = cx - 55;
+        int midW = 110;
+        int rightX = cx + 70;
+        int rightW = 115;
 
         enabledBtn = ButtonWidget.builder(buildOnOff("layoutcorrector.gui.enabled", Config.get().enabled),
-                b -> {
-                    Config.get().enabled = !Config.get().enabled;
-                    refresh();
-                })
-                .dimensions(leftX, 55, colW, 20)
+                b -> { Config.get().enabled = !Config.get().enabled; refresh(); })
+                .dimensions(leftX, ROW1, colW, 20)
                 .tooltip(Tooltip.of(Text.translatable("layoutcorrector.gui.tooltip.enabled")))
                 .build();
         addDrawableChild(enabledBtn);
 
         correctLayoutBtn = ButtonWidget.builder(buildOnOff("layoutcorrector.gui.correct_layout", Config.get().correctLayout),
-                b -> {
-                    Config.get().correctLayout = !Config.get().correctLayout;
-                    refresh();
-                })
-                .dimensions(leftX, 80, colW, 20)
+                b -> { Config.get().correctLayout = !Config.get().correctLayout; refresh(); })
+                .dimensions(leftX, ROW2, colW, 20)
                 .tooltip(Tooltip.of(Text.translatable("layoutcorrector.gui.tooltip.correct_layout")))
                 .build();
         addDrawableChild(correctLayoutBtn);
 
-        prefixField = new TextFieldWidget(this.textRenderer, leftX, 105, colW, 20,
+        prefixField = new TextFieldWidget(this.textRenderer, leftX, ROW4, colW, 20,
                 Text.literal("chat prefix"));
         prefixField.setPlaceholder(Text.literal("."));
         prefixField.setMaxLength(4);
@@ -69,16 +75,13 @@ public class LayoutConfigScreen extends Screen {
         });
         addDrawableChild(prefixField);
 
-        int midX = cx - 55;
-        int midW = 110;
-
-        aliasField = new TextFieldWidget(this.textRenderer, midX, 55, midW, 20,
+        aliasField = new TextFieldWidget(this.textRenderer, midX, ROW1, midW, 20,
                 Text.literal("Russian command"));
         aliasField.setPlaceholder(Text.translatable("layoutcorrector.gui.placeholder_alias"));
         aliasField.setMaxLength(32);
         addDrawableChild(aliasField);
 
-        targetField = new TextFieldWidget(this.textRenderer, midX, 80, midW, 20,
+        targetField = new TextFieldWidget(this.textRenderer, midX, ROW2, midW, 20,
                 Text.literal("English command"));
         targetField.setPlaceholder(Text.translatable("layoutcorrector.gui.placeholder_target"));
         targetField.setMaxLength(32);
@@ -94,34 +97,28 @@ public class LayoutConfigScreen extends Screen {
             aliasField.setText("");
             targetField.setText("");
             refresh();
-        }).dimensions(midX, 105, midW, 20)
+        }).dimensions(midX, ROW3, midW, 20)
                 .tooltip(Tooltip.of(Text.translatable("layoutcorrector.gui.tooltip.add_remove_btn")))
                 .build());
 
-        int rightX = cx + 70;
-        int rightW = 115;
-
         aliasesToDraw.clear();
         extraAliasesCount = 0;
-        int customY = 55;
-        int displayedCount = 0;
+        int aliasY = ROW1;
+        int displayed = 0;
 
         for (Map.Entry<String, String> entry : Config.get().aliases.entrySet()) {
-            if (displayedCount < 5) {
+            if (displayed < 5) {
                 aliasesToDraw.add(entry);
-                String labelText = "✖ " + entry.getKey() + " ➔ " + entry.getValue();
-                if (labelText.length() > 18) {
-                    labelText = labelText.substring(0, 16) + "..";
-                }
-                final String keyToRemove = entry.getKey();
-                ButtonWidget removeBtn = ButtonWidget.builder(Text.literal(labelText), btn -> {
-                    Config.get().aliases.remove(keyToRemove);
+                String label = "✖ " + entry.getKey() + " ➔ " + entry.getValue();
+                if (label.length() > 18) label = label.substring(0, 16) + "..";
+                final String key = entry.getKey();
+                addDrawableChild(ButtonWidget.builder(Text.literal(label), btn -> {
+                    Config.get().aliases.remove(key);
                     Config.save();
                     refresh();
-                }).dimensions(rightX, customY, rightW, 18).build();
-                addDrawableChild(removeBtn);
-                customY += 20;
-                displayedCount++;
+                }).dimensions(rightX, aliasY, rightW, 18).build());
+                aliasY += 20;
+                displayed++;
             } else {
                 extraAliasesCount++;
             }
@@ -131,19 +128,19 @@ public class LayoutConfigScreen extends Screen {
             Config.get().aliases.clear();
             Config.save();
             refresh();
-        }).dimensions(rightX, 165, rightW, 20)
+        }).dimensions(rightX, ALIAS_CLEAR_Y, rightW, 20)
                 .tooltip(Tooltip.of(Text.translatable("layoutcorrector.gui.tooltip.clear_list")))
                 .build());
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("layoutcorrector.gui.reset"), b -> {
             Config.resetToDefaults();
             refresh();
-        }).dimensions(cx - 110, 200, 105, 20)
+        }).dimensions(cx - 110, BOTTOM_Y, 105, 20)
                 .tooltip(Tooltip.of(Text.translatable("layoutcorrector.gui.tooltip.reset")))
                 .build());
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("layoutcorrector.gui.done"), b -> close())
-                .dimensions(cx + 5, 200, 105, 20)
+                .dimensions(cx + 5, BOTTOM_Y, 105, 20)
                 .tooltip(Tooltip.of(Text.translatable("layoutcorrector.gui.tooltip.done")))
                 .build());
     }
@@ -172,18 +169,22 @@ public class LayoutConfigScreen extends Screen {
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, cx, 12, 0xFFFFFF);
 
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("layoutcorrector.gui.general"), cx - 125, 42, 0xAAAAAA);
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("layoutcorrector.gui.alias_creator"), cx, 42, 0xAAAAAA);
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("layoutcorrector.gui.aliases_list"), cx + 127, 42, 0xAAAAAA);
+        context.drawCenteredTextWithShadow(this.textRenderer,
+                Text.translatable("layoutcorrector.gui.general"), cx - 125, 42, 0xAAAAAA);
+        context.drawCenteredTextWithShadow(this.textRenderer,
+                Text.translatable("layoutcorrector.gui.alias_creator"), cx, 42, 0xAAAAAA);
+        context.drawCenteredTextWithShadow(this.textRenderer,
+                Text.translatable("layoutcorrector.gui.aliases_list"), cx + 127, 42, 0xAAAAAA);
 
         context.drawTextWithShadow(this.textRenderer,
                 Text.translatable("layoutcorrector.gui.chat_prefix"),
-                leftX, 96, 0xAAAAAA);
+                leftX, LABEL_PREFIX, 0x888888);
 
         if (extraAliasesCount > 0) {
+            int lastAliasBottom = ROW1 + (5 * 20);
             context.drawCenteredTextWithShadow(this.textRenderer,
                     Text.translatable("layoutcorrector.gui.more_items", String.valueOf(extraAliasesCount)),
-                    cx + 127, 155, 0x888888);
+                    cx + 127, lastAliasBottom + 4, 0x888888);
         }
     }
 }
