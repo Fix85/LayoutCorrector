@@ -13,6 +13,7 @@ import java.util.Map;
 public class Config {
     public boolean enabled = true;
     public boolean correctLayout = true;
+    public String chatPrefix = ".";
     public Map<String, String> aliases = new LinkedHashMap<>();
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -42,6 +43,7 @@ public class Config {
             INSTANCE = defaults();
         }
         if (INSTANCE.aliases == null) INSTANCE.aliases = new LinkedHashMap<>();
+        if (INSTANCE.chatPrefix == null || INSTANCE.chatPrefix.isEmpty()) INSTANCE.chatPrefix = ".";
     }
 
     public static void save() {

@@ -18,5 +18,7 @@
   "layoutcorrector.gui.tooltip.add_remove_btn": "Creates or updates an alias. To delete, click the alias in the right-hand list.",
   "layoutcorrector.gui.tooltip.clear_list": "Deletes all custom aliases currently defined",
   "layoutcorrector.gui.tooltip.reset": "Reverts all configuration options to factory defaults",
-  "layoutcorrector.gui.tooltip.done": "Saves your configuration and returns to the game"
+  "layoutcorrector.gui.tooltip.done": "Saves your configuration and returns to the game",
+  "layoutcorrector.gui.chat_prefix": "Chat prefix:",
+  "layoutcorrector.gui.tooltip.chat_prefix": "The prefix that triggers layout correction in chat (default: '.'). Type the prefix followed by a command in the wrong layout."
 }

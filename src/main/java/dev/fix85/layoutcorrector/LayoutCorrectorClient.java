@@ -37,29 +37,30 @@ public class LayoutCorrectorClient implements ClientModInitializer {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
             if (!Config.get().enabled) return true;
 
-            if (Config.get().correctLayout && LayoutTranslator.shouldCorrectLayout(message)) {
+            String prefix = Config.get().chatPrefix;
+
+            if (Config.get().correctLayout && LayoutTranslator.shouldCorrectLayout(message, prefix)) {
                 String corrected = LayoutTranslator.translateLayout(message);
                 if (corrected.startsWith("/")) {
                     String cmdWithoutSlash = corrected.substring(1);
                     String finalCmd = LayoutTranslator.translateAliases(cmdWithoutSlash);
-                    
                     MinecraftClient client = MinecraftClient.getInstance();
                     if (client.player != null) {
                         client.player.networkHandler.sendChatCommand(finalCmd);
                     }
-                    return false; 
+                    return false;
                 }
             }
 
-            if (message.startsWith(".")) {
-                String potentialCmd = message.substring(1);
+            if (!prefix.isEmpty() && message.startsWith(prefix)) {
+                String potentialCmd = message.substring(prefix.length());
                 String aliasTranslated = LayoutTranslator.translateAliases(potentialCmd);
                 if (!aliasTranslated.equals(potentialCmd)) {
                     MinecraftClient client = MinecraftClient.getInstance();
                     if (client.player != null) {
                         client.player.networkHandler.sendChatCommand(aliasTranslated);
                     }
-                    return false; 
+                    return false;
                 }
             }
 

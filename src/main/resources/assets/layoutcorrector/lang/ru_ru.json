@@ -18,5 +18,7 @@
   "layoutcorrector.gui.tooltip.add_remove_btn": "Создает или обновляет алиас. Для удаления нажмите на элемент в списке справа.",
   "layoutcorrector.gui.tooltip.clear_list": "Удалить все созданные соответствия команд",
   "layoutcorrector.gui.tooltip.reset": "Сбросить все настройки мода к значениям по умолчанию",
-  "layoutcorrector.gui.tooltip.done": "Сохранить изменения и вернуться в игру"
+  "layoutcorrector.gui.tooltip.done": "Сохранить изменения и вернуться в игру",
+  "layoutcorrector.gui.chat_prefix": "Префикс чата:",
+  "layoutcorrector.gui.tooltip.chat_prefix": "Символ перед командой, при котором срабатывает исправление раскладки (по умолчанию '.'). Введите его перед командой на неверной раскладке."
 }

@@ -16,6 +16,7 @@ public class LayoutConfigScreen extends Screen {
 
     private TextFieldWidget aliasField;
     private TextFieldWidget targetField;
+    private TextFieldWidget prefixField;
 
     private ButtonWidget enabledBtn;
     private ButtonWidget correctLayoutBtn;
@@ -55,6 +56,19 @@ public class LayoutConfigScreen extends Screen {
                 .build();
         addDrawableChild(correctLayoutBtn);
 
+        prefixField = new TextFieldWidget(this.textRenderer, leftX, 105, colW, 20,
+                Text.literal("chat prefix"));
+        prefixField.setPlaceholder(Text.literal("."));
+        prefixField.setMaxLength(4);
+        prefixField.setText(Config.get().chatPrefix);
+        prefixField.setChangedListener(text -> {
+            if (!text.isEmpty()) {
+                Config.get().chatPrefix = text;
+                Config.save();
+            }
+        });
+        addDrawableChild(prefixField);
+
         int midX = cx - 55;
         int midW = 110;
 
@@ -73,7 +87,6 @@ public class LayoutConfigScreen extends Screen {
         addDrawableChild(ButtonWidget.builder(Text.translatable("layoutcorrector.gui.add_update"), b -> {
             String alias = aliasField.getText().trim().toLowerCase().replace("/", "");
             String target = targetField.getText().trim().toLowerCase().replace("/", "");
-            
             if (!alias.isEmpty() && !target.isEmpty()) {
                 Config.get().aliases.put(alias, target);
                 Config.save();
@@ -96,12 +109,10 @@ public class LayoutConfigScreen extends Screen {
         for (Map.Entry<String, String> entry : Config.get().aliases.entrySet()) {
             if (displayedCount < 5) {
                 aliasesToDraw.add(entry);
-                
                 String labelText = "✖ " + entry.getKey() + " ➔ " + entry.getValue();
                 if (labelText.length() > 18) {
                     labelText = labelText.substring(0, 16) + "..";
                 }
-
                 final String keyToRemove = entry.getKey();
                 ButtonWidget removeBtn = ButtonWidget.builder(Text.literal(labelText), btn -> {
                     Config.get().aliases.remove(keyToRemove);
@@ -109,7 +120,6 @@ public class LayoutConfigScreen extends Screen {
                     refresh();
                 }).dimensions(rightX, customY, rightW, 18).build();
                 addDrawableChild(removeBtn);
-
                 customY += 20;
                 displayedCount++;
             } else {
@@ -158,12 +168,17 @@ public class LayoutConfigScreen extends Screen {
     public void render(net.minecraft.client.gui.DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         int cx = this.width / 2;
+        int leftX = cx - 180;
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, cx, 12, 0xFFFFFF);
 
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("layoutcorrector.gui.general"), cx - 125, 42, 0xAAAAAA);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("layoutcorrector.gui.alias_creator"), cx, 42, 0xAAAAAA);
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("layoutcorrector.gui.aliases_list"), cx + 127, 42, 0xAAAAAA);
+
+        context.drawTextWithShadow(this.textRenderer,
+                Text.translatable("layoutcorrector.gui.chat_prefix"),
+                leftX, 96, 0xAAAAAA);
 
         if (extraAliasesCount > 0) {
             context.drawCenteredTextWithShadow(this.textRenderer,

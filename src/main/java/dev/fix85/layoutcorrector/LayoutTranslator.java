@@ -24,14 +24,11 @@ public class LayoutTranslator {
         return sb.toString();
     }
 
-    public static boolean shouldCorrectLayout(String input) {
-        if (input == null || input.isEmpty()) return false;
-        
-        if (input.charAt(0) == '.') {
-            if (input.length() > 1) {
-                char next = input.charAt(1);
-                return isRussianLetter(next);
-            }
+    public static boolean shouldCorrectLayout(String input, String prefix) {
+        if (input == null || input.isEmpty() || prefix == null || prefix.isEmpty()) return false;
+        if (input.startsWith(prefix) && input.length() > prefix.length()) {
+            char next = input.charAt(prefix.length());
+            return isRussianLetter(next);
         }
         return false;
     }
