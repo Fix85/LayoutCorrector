@@ -1,0 +1,16 @@
+{
+  "key.layoutcorrector.open_gui": "Open Layout Corrector settings",
+  "layoutcorrector.title": "Layout Corrector Settings",
+  "layoutcorrector.gui.general": "General",
+  "layoutcorrector.gui.alias_creator": "Alias Creator",
+  "layoutcorrector.gui.aliases_list": "Aliases List",
+  "layoutcorrector.gui.enabled": "Enabled",
+  "layoutcorrector.gui.correct_layout": "Layout Correction",
+  "layoutcorrector.gui.placeholder_alias": "e.g. спавн",
+  "layoutcorrector.gui.placeholder_target": "e.g. spawn",
+  "layoutcorrector.gui.add_remove": "Add / Remove",
+  "layoutcorrector.gui.clear_list": "Clear List",
+  "layoutcorrector.gui.reset": "Reset to Defaults",
+  "layoutcorrector.gui.done": "Done",
+  "layoutcorrector.gui.more_items": "+ %s more aliases"
+}

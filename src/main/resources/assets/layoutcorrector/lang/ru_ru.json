@@ -1,0 +1,16 @@
+{
+  "key.layoutcorrector.open_gui": "Открыть настройки Layout Corrector",
+  "layoutcorrector.title": "Настройки Layout Corrector",
+  "layoutcorrector.gui.general": "Общие",
+  "layoutcorrector.gui.alias_creator": "Создать алиас",
+  "layoutcorrector.gui.aliases_list": "Список алиасов",
+  "layoutcorrector.gui.enabled": "Мод включен",
+  "layoutcorrector.gui.correct_layout": "Авто-раскладка",
+  "layoutcorrector.gui.placeholder_alias": "напр. спавн",
+  "layoutcorrector.gui.placeholder_target": "напр. spawn",
+  "layoutcorrector.gui.add_remove": "Добавить / Удалить",
+  "layoutcorrector.gui.clear_list": "Очистить список",
+  "layoutcorrector.gui.reset": "Сбросить настройки",
+  "layoutcorrector.gui.done": "Готово",
+  "layoutcorrector.gui.more_items": "+ еще %s алиасов"
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "layoutcorrector",
+  "version": "${version}",
+  "name": "Layout Corrector",
+  "description": "Automatically corrects chat commands typed in the wrong keyboard layout (e.g. .ызфцт -> /spawn) and translates custom Russian aliases to English commands (e.g. /спавн -> /spawn).",
+  "authors": [
+    "Fix85"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Fix85/LayoutCorrector",
+    "sources": "https://github.com/Fix85/LayoutCorrector"
+  },
+  "license": "MIT",
+  "icon": "assets/layoutcorrector/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.fix85.layoutcorrector.LayoutCorrectorClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
